@@ -1,45 +1,23 @@
-"""
-Bandit targets — Python security anti-patterns.
-WARNING: Intentionally vulnerable code for scanner testing.
-"""
-
-import os
-import pickle
 import subprocess
 import hashlib
+from flask import Flask, request
+
+app = Flask(__name__)
 
 
-# B105: hardcoded_password_string
-DB_PASSWORD = "SuperSecretPassword123!"
+@app.route("/run")
+def run_command():
+    cmd = request.args.get("cmd", "echo hello")
+    result = subprocess.check_output(cmd, shell=True)  # command injection
+    return result
 
 
-def run_user_command(user_input: str) -> str:
-    """B602: subprocess_popen_with_shell_equals_true"""
-    result = subprocess.Popen(user_input, shell=True, stdout=subprocess.PIPE)
-    return result.stdout.read().decode()
-
-
-def unsafe_eval(expression: str):
-    """B307: eval used"""
-    return eval(expression)
-
-
-def load_data(data: bytes):
-    """B301: pickle.loads"""
-    return pickle.loads(data)
-
-
-def weak_hash(password: str) -> str:
-    """B303: use of insecure MD5 hash"""
-    return hashlib.md5(password.encode()).hexdigest()
-
-
-def run_system_command(cmd: str):
-    """B605: start_process_with_a_shell"""
-    os.system(cmd)
+@app.route("/hash")
+def hash_value():
+    data = request.args.get("data", "")
+    digest = hashlib.md5(data.encode()).hexdigest()  # weak hash
+    return digest
 
 
 if __name__ == "__main__":
-    print(run_user_command("echo hello"))
-    print(unsafe_eval("2 + 2"))
-    print(weak_hash("password"))
+    app.run(debug=True)
