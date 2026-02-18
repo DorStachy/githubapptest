@@ -1,24 +1,30 @@
-# githubapptest
+# Task Dashboard
 
-CodeFence GitHub App integration test repository.
+A lightweight Flask API for managing team tasks.
+Built as an internal tool for the DevOps team.
 
-This repo contains **15 intentionally vulnerable patterns** for validating
-the CodeFence security scanner across all 10 scanning tools.
+## Quick Start
 
-## Vulnerability Map
+```bash
+pip install -r requirements.txt
+python src/app.py
+```
 
-| # | File | Vulnerability | Scanner |
-|---|------|--------------|---------|
-| 1 | `requirements.txt` | Flask 2.0.0 � CVE-2023-30861 | osv-scanner, pip-audit, trivy |
-| 2 | `src/app.py:11` | Command injection (`shell=True`) | bandit, semgrep |
-| 3 | `src/app.py:18` | Weak hash (MD5) | bandit, semgrep |
-| 4 | `Dockerfile:1` | Unpinned base image (`:latest`) | checkov, trivy |
-| 5 | `Dockerfile` | No USER directive (runs as root) | checkov, trivy |
-| 6 | `Dockerfile` | No HEALTHCHECK instruction | checkov, trivy |
-| 7 | `secrets/.env:1` | Hardcoded AWS Access Key | gitleaks |
-| 8 | `secrets/.env:2` | Hardcoded AWS Secret Key | gitleaks |
-| 9 | `.github/workflows/ci.yml:18` | Expression injection in `run:` | actionlint, zizmor |
+## API Endpoints
 
-**Expected: ~15 scanner findings (some overlap across tools).**
+- `GET /tasks` — list all tasks
+- `POST /tasks` — create a new task
+- `GET /health` — health check
+- `GET /admin/run` — run maintenance commands (admin only)
+- `GET /admin/verify` — verify data integrity
 
-> :warning: Do NOT use any code from this repository in production.
+## Deployment
+
+```bash
+docker build -t task-dashboard .
+docker run -p 8080:8080 task-dashboard
+```
+
+## CI
+
+Pull requests are automatically tested via GitHub Actions.
