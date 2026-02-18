@@ -1,0 +1,49 @@
+# Actionlint + Zizmor targets — GitHub Actions anti-patterns
+# WARNING: Intentionally insecure for scanner testing
+
+name: Deploy to Production
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Zizmor: unpinned action (should use SHA)
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - run: npm ci
+      - run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      # Actionlint: expression injection via untrusted input
+      - name: Print PR title
+        run: echo "Deploying PR: ${{ github.event.pull_request.title }}"
+
+      # Actionlint: expression injection via untrusted input
+      - name: Print commit message
+        run: |
+          echo "Commit: ${{ github.event.head_commit.message }}"
+          echo "Author: ${{ github.event.pull_request.head.label }}"
+
+      # Hardcoded secret in workflow
+      - name: Deploy
+        env:
+          DEPLOY_TOKEN: "test-deploy-token-1234567890abcdef"
+        run: |
+          curl -H "Authorization: token $DEPLOY_TOKEN" \
+            https://api.example.com/deploy
+
+      - name: Notify
+        if: always()
+        run: echo "Deployment complete"
