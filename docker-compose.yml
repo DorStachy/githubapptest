@@ -1,0 +1,91 @@
+# docker-compose.yml — INTENTIONALLY VULNERABLE for CodeFence testing.
+#
+# Covers: privileged mode, secrets in environment, no read-only root,
+#         exposed debug ports, host mounts, network_mode host.
+
+version: "3.8"
+
+services:
+  # ═══════════════════════════════════════════════════════════════
+  # APP — multiple security issues
+  # ═══════════════════════════════════════════════════════════════
+  app:
+    build: .
+    ports:
+      - "80:80"
+      - "9229:9229"         # HIGH: Node debug port exposed to host
+    environment:
+      # CRITICAL: secrets in plain text in compose file
+      - DATABASE_URL=postgres://admin:ProductionP@ss!@db:5432/production
+      - JWT_SECRET=my-jwt-secret-hardcoded
+      - STRIPE_KEY=sk_FAKE_not_a_real_stripe_key_1234567890
+      - REDIS_PASSWORD=r3d1sP@ss
+      - NODE_ENV=production
+      - DEBUG=*              # MEDIUM: debug logging in production
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # CRITICAL: container escape
+      - /etc:/host-etc       # HIGH: host filesystem mounted
+      - .:/app               # MEDIUM: source code mounted
+    privileged: true          # CRITICAL: full host capabilities
+    network_mode: host        # HIGH: shares host network
+    cap_add:
+      - SYS_ADMIN            # HIGH: danger capability
+      - NET_ADMIN
+    restart: always
+    depends_on:
+      - db
+      - redis
+
+  # ═══════════════════════════════════════════════════════════════
+  # DATABASE — exposed ports, weak credentials
+  # ═══════════════════════════════════════════════════════════════
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"          # HIGH: DB port exposed to host
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ProductionP@ss!   # CRITICAL: weak password in compose
+      POSTGRES_DB: production
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # ═══════════════════════════════════════════════════════════════
+  # REDIS — no auth (older image, default config)
+  # ═══════════════════════════════════════════════════════════════
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"          # HIGH: Redis exposed without auth
+
+  # ═══════════════════════════════════════════════════════════════
+  # ADMIN PANEL — no auth, debug mode
+  # ═══════════════════════════════════════════════════════════════
+  admin:
+    image: adminer:latest     # MEDIUM: latest tag
+    ports:
+      - "8080:8080"           # HIGH: DB admin panel on public port
+    environment:
+      - ADMINER_DEFAULT_SERVER=db
+
+  # ═══════════════════════════════════════════════════════════════
+  # SAFE SERVICE (no vulns — should NOT flag significantly)
+  # ═══════════════════════════════════════════════════════════════
+  worker:
+    image: myregistry/worker:1.2.3
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+volumes:
+  db-data:

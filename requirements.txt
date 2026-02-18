@@ -1,10 +1,30 @@
-# OSV-Scanner + pip-audit targets — known vulnerable Python packages
-# WARNING: Intentionally pinned to vulnerable versions
+# ─────────────────────────────────────────────────────────────
+# Python dependencies — mix of VULNERABLE and safe packages
+# for CodeFence SCA scanner testing (OSV-Scanner, pip-audit).
+# ─────────────────────────────────────────────────────────────
 
-Flask==2.0.0
-requests==2.25.0
-Jinja2==2.11.3
-PyYAML==5.3.1
-cryptography==3.3.2
-urllib3==1.26.4
-Pillow==8.1.0
+# ─── CRITICAL CVEs ─────────────────────────────────────────
+Flask==2.0.0                  # CVE-2023-30861 — session cookie leak
+requests==2.25.0              # CVE-2023-32681 — auth header leak on redirect
+PyYAML==5.3.1                 # CVE-2020-14343 — arbitrary code via yaml.load
+Pillow==8.1.0                 # Multiple CVEs — heap overflow, DoS
+Jinja2==2.11.3                # CVE-2024-22195 — XSS via template
+urllib3==1.26.4               # CVE-2023-43804 — cookie header leak
+cryptography==3.4.8           # CVE-2023-49083 — NULL dereference
+
+# ─── HIGH CVEs ────────────────────────────────────────────
+Django==3.2.0                 # Multiple CVEs (SQL injection, XSS in admin)
+paramiko==2.7.2               # CVE-2023-48795 — Terrapin prefix truncation
+lxml==4.6.3                   # CVE-2021-43818 — HTML cleaner XSS bypass
+Werkzeug==2.0.0               # CVE-2023-23934 — cookie injection
+setuptools==58.0.0            # CVE-2024-6345 — RCE via package URL
+
+# ─── MEDIUM CVEs ──────────────────────────────────────────
+numpy==1.21.0                 # CVE-2021-41496 — buffer overflow
+certifi==2022.12.7            # CVE-2023-37920 — untrusted root cert
+aiohttp==3.7.4                # CVE-2023-49081 — CRLF injection
+
+# ─── SAFE / CURRENT (should NOT flag) ────────────────────
+typing-extensions==4.9.0
+pydantic==2.5.3
+click==8.1.7

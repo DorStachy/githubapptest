@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────────
+# Dockerfile — INTENTIONALLY VULNERABLE for CodeFence testing.
+#
+# Covers: running as root, latest tag, secrets in ENV, no healthcheck,
+#         ADD from URL, privileged ports, and SAFE counterparts.
+# ─────────────────────────────────────────────────────────────
+
+# ─── BASE: using 'latest' tag (MEDIUM) — unpinned base ──────
+FROM python:latest
+
+# ─── SECRETS IN ENV (CRITICAL) ──────────────────────────────
+ENV DATABASE_URL="postgres://admin:s3cretP@ss@db.prod:5432/app"
+ENV API_KEY="sk-proj-fake-openai-api-key-for-testing"
+ENV AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"
+ENV AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
+# ─── RUNNING AS ROOT (HIGH) ────────────────────────────────
+# (no USER directive = runs as root by default)
+
+# ─── ADD FROM URL (MEDIUM) — downloads and auto-extracts ───
+ADD https://example.com/agent.tar.gz /opt/agent/
+
+# ─── COPY INSTEAD (SAFE) ──────────────────────────────────
+# COPY agent.tar.gz /opt/agent/
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# ─── NO HEALTHCHECK (LOW) ──────────────────────────────────
+# Missing HEALTHCHECK instruction
+
+# ─── EXPOSE PRIVILEGED PORT (INFO) ─────────────────────────
+EXPOSE 80
+
+CMD ["python", "src/app.py"]
