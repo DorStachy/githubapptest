@@ -1,0 +1,20 @@
+# TaskForge application config
+app:
+  name: TaskForge
+  version: 1.0.0
+  debug: true          # Should be false in production
+
+database:
+  path: /tmp/taskforge.db
+  pool_size: 5
+
+logging:
+  level: DEBUG         # Overly verbose in production
+  format: "%(asctime)s %(levelname)s %(message)s"
+
+cors:
+  allowed_origins:
+    - "*"              # Permissive — should be restricted
+
+rate_limiting:
+  enabled: false       # Disabled — potential abuse vector
