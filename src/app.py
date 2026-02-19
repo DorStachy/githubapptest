@@ -16,6 +16,8 @@ import jwt
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS  # noqa: F401 (would be imported if installed)
 
+from src.utils import download_attachment, register_calculator, register_export
+
 # ──────────────────────────────────────────────
 # App setup
 # ──────────────────────────────────────────────
@@ -247,6 +249,12 @@ def verify_payload():
 # ──────────────────────────────────────────────
 # Entrypoint
 # ──────────────────────────────────────────────
+
+# Register utility routes (new vuln endpoints)
+download_attachment(app)
+register_calculator(app)
+register_export(app)
+
 if __name__ == "__main__":
     init_db()
     # HIGH — Binding to 0.0.0.0 with debug=True in production
