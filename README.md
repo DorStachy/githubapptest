@@ -3,11 +3,11 @@
 Intentionally vulnerable, realistic sample repository for validating the
 GitHub vulnerability scanning application.
 
-This codebase is intentionally seeded with **exactly 25 vulnerabilities**,
+This codebase is intentionally seeded with **exactly 30 vulnerabilities**,
 each tagged in source code with a unique internal marker so scanner
 precision can be measured as:
 
-- True positives: 25
+- True positives: 30
 - False negatives: 0
 - False positives: 0 (target)
 
@@ -53,6 +53,11 @@ npm run start
 23. XXE-capable XML parser configuration
 24. Command injection in import script
 25. Dynamic code execution from serialized input
+26. Server-side template code execution through untrusted snippet rendering
+27. Unsafe Python pickle deserialization
+28. Shell command execution with user-controlled host in Python helper
+29. Insecure temporary file path generation using `mktemp`
+30. Dynamic Python `eval` of untrusted expression input
 
 ## Safety note
 

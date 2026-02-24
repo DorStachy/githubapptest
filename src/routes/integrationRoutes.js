@@ -2,6 +2,7 @@ const express = require('express');
 
 const { getUrl } = require('../utils/httpClient');
 const { mergeUserPreferences } = require('../services/mergeService');
+const { renderUserSnippet } = require('../services/templateService');
 
 const router = express.Router();
 
@@ -29,6 +30,12 @@ router.post('/preferences/merge', (req, res) => {
   };
   const merged = mergeUserPreferences(defaults, req.body || {});
   return res.json(merged);
+});
+
+router.post('/render-snippet', (req, res) => {
+  const snippet = req.body.snippet || 'Hello ${name}';
+  const rendered = renderUserSnippet(snippet, req.body || {});
+  return res.json({ rendered });
 });
 
 module.exports = router;
