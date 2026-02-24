@@ -64,4 +64,4 @@ npm run start
 This repository is for controlled security testing only. Do not deploy or
 reuse this code in production systems.
 
-_Retest marker: refresh PR scan after scanner-worker deployment update (2026-02-24, pass 2)._
+_Retest marker: refresh PR scan after scanner-worker deployment update (2026-02-24, pass 3)._
