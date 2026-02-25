@@ -1,0 +1,30 @@
+name: CodeFence Security Scan
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  codefence:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run CodeFence local scanner
+        uses: codefence/scanner-action@v1
+        with:
+          api-key: ${{ secrets.CODEFENCE_API_KEY }}
+          evidence-mode: standard
+          llm-mode: codefence
+          scanners: all
+          reporting-mode: check-run,sarif,pr-comment
+          fail-on: never
+        env:
+          CODEFENCE_INSTALLATION_ID: ${{ secrets.CODEFENCE_INSTALLATION_ID }}

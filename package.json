@@ -1,0 +1,19 @@
+{
+  "name": "githubapptest-vuln-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Intentionally vulnerable app for CodeFence pipeline validation",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.0",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "ldapjs": "^3.0.7",
+    "mongodb": "^6.11.0",
+    "sqlite3": "^5.1.7"
+  }
+}
