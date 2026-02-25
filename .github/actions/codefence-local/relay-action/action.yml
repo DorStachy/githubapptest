@@ -10,7 +10,7 @@ inputs:
   codefence-api-url:
     description: 'CodeFence Results API URL'
     required: false
-    default: 'https://api.codefence.io'
+    default: 'https://api.cera.buzz'
 runs:
   using: 'composite'
   steps:

@@ -56,7 +56,7 @@ inputs:
   codefence-api-url:
     description: 'CodeFence Results API URL'
     required: false
-    default: 'https://api.codefence.io'
+    default: 'https://api.cera.buzz'
   strict-dns-resolvers:
     description: 'Comma-separated DNS resolver IPs for strict mode'
     required: false

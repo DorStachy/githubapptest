@@ -72,7 +72,7 @@ async function main(): Promise<void> {
   const apiKey = process.env.INPUT_API_KEY || process.env.CODEFENCE_API_KEY;
   const artifactPath = process.env.INPUT_ARTIFACT_PATH;
   const apiBaseUrl =
-    process.env.INPUT_CODEFENCE_API_URL || process.env.CODEFENCE_API_URL || 'https://api.codefence.io';
+    process.env.INPUT_CODEFENCE_API_URL || process.env.CODEFENCE_API_URL || 'https://api.cera.buzz';
 
   if (!apiKey) {
     throw new Error('Missing relay action input: api-key');

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 strict_mode="${EGRESS_MODE:-${INPUT_EGRESS_MODE:-standard}}"
-api_url="${CODEFENCE_API_URL:-${INPUT_CODEFENCE_API_URL:-https://api.codefence.io}}"
+api_url="${CODEFENCE_API_URL:-${INPUT_CODEFENCE_API_URL:-https://api.cera.buzz}}"
 
 if [[ "$strict_mode" == "strict" ]]; then
   echo "Strict mode selected; full enforcement is handled by egress-strict.sh"

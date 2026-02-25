@@ -67,7 +67,7 @@ meta_json="$($resolver_script --format=json)" || fatal "Cannot fetch GitHub meta
 actions_count="$(echo "$meta_json" | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8')); process.stdout.write(String((d.actions||[]).length));")"
 [[ "$actions_count" != "0" ]] || fatal "GitHub meta API returned empty actions CIDR list"
 
-api_url="${CODEFENCE_API_URL:-${INPUT_CODEFENCE_API_URL:-https://api.codefence.io}}"
+api_url="${CODEFENCE_API_URL:-${INPUT_CODEFENCE_API_URL:-https://api.cera.buzz}}"
 api_host="$(echo "$api_url" | sed -E 's#^https?://##' | cut -d/ -f1)"
 api_ips="$(getent ahosts "$api_host" 2>/dev/null | awk '{print $1}' | sort -u | tr '\n' ' ')"
 [[ -n "$api_ips" ]] || fatal "Unable to resolve CodeFence API host: ${api_host}"

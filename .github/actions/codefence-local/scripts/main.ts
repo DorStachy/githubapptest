@@ -356,7 +356,7 @@ async function main(): Promise<void> {
     EGRESS_MODE: egressMode,
     INPUT_EGRESS_MODE: egressMode,
     INPUT_STRICT_DNS_RESOLVERS: getInput('strict-dns-resolvers', ''),
-    INPUT_CODEFENCE_API_URL: getInput('codefence-api-url', 'https://api.codefence.io'),
+    INPUT_CODEFENCE_API_URL: getInput('codefence-api-url', 'https://api.cera.buzz'),
   };
 
   if (egressMode === 'strict') {
@@ -414,7 +414,7 @@ async function main(): Promise<void> {
 
   const signingSecret = resolveSigningSecret(apiKey);
   const config: SignedClientConfig = {
-    apiBaseUrl: getInput('codefence-api-url', process.env.CODEFENCE_API_URL || 'https://api.codefence.io'),
+    apiBaseUrl: getInput('codefence-api-url', process.env.CODEFENCE_API_URL || 'https://api.cera.buzz'),
     apiKey,
     signingSecret,
     keyVersion: safeNumber(

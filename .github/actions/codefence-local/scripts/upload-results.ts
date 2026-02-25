@@ -193,7 +193,7 @@ function runCli(): void {
   const keyVersion = safeNumber(process.env.CODEFENCE_KEY_VERSION || process.env.CODEFENCE_SIGNING_KEY_VERSION || 1, 1);
 
   const config: SignedClientConfig = {
-    apiBaseUrl: getInput('codefence-api-url', process.env.CODEFENCE_API_URL || 'https://api.codefence.io'),
+    apiBaseUrl: getInput('codefence-api-url', process.env.CODEFENCE_API_URL || 'https://api.cera.buzz'),
     apiKey,
     signingSecret,
     keyVersion,
