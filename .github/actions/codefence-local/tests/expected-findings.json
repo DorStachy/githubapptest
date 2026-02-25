@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "expectedFindings": [
+    { "id": "js-sqli-1", "file": "js/sql-injection.js", "category": "SAST", "normalizedRuleCategory": "sql-injection", "minSeverity": "HIGH", "detectedBy": ["codeql", "semgrep"] },
+    { "id": "js-xss-1", "file": "js/xss-reflect.js", "category": "SAST", "normalizedRuleCategory": "xss", "minSeverity": "MEDIUM", "detectedBy": ["semgrep"] },
+    { "id": "js-cmdi-1", "file": "js/command-injection.js", "category": "SAST", "normalizedRuleCategory": "command-injection", "minSeverity": "HIGH", "detectedBy": ["semgrep"] },
+    { "id": "js-ssrf-1", "file": "js/ssrf.js", "category": "SAST", "normalizedRuleCategory": "ssrf", "minSeverity": "HIGH", "detectedBy": ["codeql", "semgrep"] },
+    { "id": "js-path-1", "file": "js/path-traversal.js", "category": "SAST", "normalizedRuleCategory": "path-traversal", "minSeverity": "HIGH", "detectedBy": ["semgrep"] },
+    { "id": "js-crypto-1", "file": "js/crypto-weak.js", "category": "SAST", "normalizedRuleCategory": "crypto-misuse", "minSeverity": "MEDIUM", "detectedBy": ["semgrep"] },
+
+    { "id": "py-sqli-1", "file": "python/sql_injection.py", "category": "SAST", "normalizedRuleCategory": "sql-injection", "minSeverity": "HIGH", "detectedBy": ["bandit", "semgrep"] },
+    { "id": "py-cmdi-1", "file": "python/command_injection.py", "category": "SAST", "normalizedRuleCategory": "command-injection", "minSeverity": "HIGH", "detectedBy": ["bandit"] },
+    { "id": "py-secret-1", "file": "python/hardcoded_secret.py", "category": "SECRETS", "normalizedRuleCategory": "hardcoded-secret", "minSeverity": "CRITICAL", "detectedBy": ["gitleaks"] },
+    { "id": "py-crypto-1", "file": "python/weak_crypto.py", "category": "SAST", "normalizedRuleCategory": "crypto-misuse", "minSeverity": "MEDIUM", "detectedBy": ["bandit"] },
+    { "id": "py-ssrf-1", "file": "python/ssrf.py", "category": "SAST", "normalizedRuleCategory": "ssrf", "minSeverity": "HIGH", "detectedBy": ["semgrep"] },
+
+    { "id": "secret-aws-1", "file": "secrets/.env.leaked", "category": "SECRETS", "normalizedRuleCategory": "hardcoded-secret", "minSeverity": "CRITICAL", "detectedBy": ["gitleaks"] },
+    { "id": "secret-pat-1", "file": "secrets/.env.leaked", "category": "SECRETS", "normalizedRuleCategory": "hardcoded-secret", "minSeverity": "CRITICAL", "detectedBy": ["gitleaks"] },
+    { "id": "secret-key-1", "file": "secrets/private-key.pem", "category": "SECRETS", "normalizedRuleCategory": "hardcoded-secret", "minSeverity": "CRITICAL", "detectedBy": ["gitleaks"] },
+    { "id": "secret-config-1", "file": "secrets/config-with-secrets.yml", "category": "SECRETS", "normalizedRuleCategory": "hardcoded-secret", "minSeverity": "HIGH", "detectedBy": ["gitleaks"] },
+
+    { "id": "actions-unpinned-1", "file": "actions/unpinned.yml", "category": "ACTIONS", "normalizedRuleCategory": "unpinned-action", "minSeverity": "MEDIUM", "detectedBy": ["actionlint", "zizmor"] },
+    { "id": "actions-overperm-1", "file": "actions/overperm.yml", "category": "ACTIONS", "normalizedRuleCategory": "overbroad-permissions", "minSeverity": "HIGH", "detectedBy": ["zizmor"] },
+    { "id": "actions-scriptinj-1", "file": "actions/script-injection.yml", "category": "ACTIONS", "normalizedRuleCategory": "script-injection", "minSeverity": "HIGH", "detectedBy": ["zizmor"] },
+    { "id": "actions-trigger-1", "file": "actions/dangerous-trigger.yml", "category": "ACTIONS", "normalizedRuleCategory": "dangerous-trigger", "minSeverity": "HIGH", "detectedBy": ["zizmor"] },
+
+    { "id": "iac-s3-1", "file": "iac/main.tf", "category": "IAC", "normalizedRuleCategory": "iac-misconfiguration", "minSeverity": "HIGH", "detectedBy": ["checkov"] },
+    { "id": "iac-iam-1", "file": "iac/main.tf", "category": "IAC", "normalizedRuleCategory": "iac-misconfiguration", "minSeverity": "HIGH", "detectedBy": ["checkov"] },
+    { "id": "iac-k8s-1", "file": "iac/k8s-deployment.yaml", "category": "IAC", "normalizedRuleCategory": "privileged-container", "minSeverity": "HIGH", "detectedBy": ["checkov"] },
+    { "id": "docker-bad-1", "file": "iac/Dockerfile.bad", "category": "CONTAINER", "normalizedRuleCategory": "dockerfile-weakness", "minSeverity": "MEDIUM", "detectedBy": ["trivy", "checkov"] },
+
+    { "id": "sca-lodash-1", "file": "sca/package-lock.json", "category": "SCA", "normalizedRuleCategory": "known-cve", "cve": "CVE-2021-23337", "minSeverity": "HIGH", "detectedBy": ["osv-scanner"] },
+    { "id": "sca-flask-1", "file": "sca/requirements.txt", "category": "SCA", "normalizedRuleCategory": "known-cve", "minSeverity": "HIGH", "detectedBy": ["pip-audit"] },
+    { "id": "sca-requests-1", "file": "sca/requirements.txt", "category": "SCA", "normalizedRuleCategory": "known-cve", "minSeverity": "MEDIUM", "detectedBy": ["pip-audit"] },
+
+    { "id": "supply-git-1", "file": "sca/supply-chain/git-dep.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-git-dep", "minSeverity": "HIGH", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-unpinned-1", "file": "sca/supply-chain/git-dep.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-unpinned-git-ref", "minSeverity": "HIGH", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-script-1", "file": "sca/supply-chain/lifecycle-scripts.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-lifecycle-script", "minSeverity": "CRITICAL", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-typosquat-1", "file": "sca/supply-chain/typosquat.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-typosquat", "minSeverity": "HIGH", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-newdep-1", "file": "sca/supply-chain/typosquat.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-new-dependency", "minSeverity": "INFO", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-lockfile-change-1", "file": "sca/supply-chain/lockfile-diff.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-lockfile-version-change", "minSeverity": "LOW", "detectedBy": ["supply-chain-heuristics"] },
+    { "id": "supply-new-transitive-1", "file": "sca/supply-chain/lockfile-diff.json", "category": "SCA", "normalizedRuleCategory": "supply-chain-lockfile-new-transitive", "minSeverity": "LOW", "detectedBy": ["supply-chain-heuristics"] },
+
+    { "id": "posture-score-1", "file": "repository", "category": "POSTURE", "normalizedRuleCategory": "security-issue", "minSeverity": "MEDIUM", "detectedBy": ["scorecard"] }
+  ]
+}

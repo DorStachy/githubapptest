@@ -1,0 +1,33 @@
+# CodeFence gitleaks extension patterns
+[extend]
+useDefault = true
+
+[[rules]]
+id = "codefence-cloudflare-token"
+description = "Cloudflare token"
+regex = '''(?i)(cloudflare(_|-)api(_|-)token|CF_API_TOKEN)\s*[:=]\s*[A-Za-z0-9_-]{40,}'''
+keywords = ["cloudflare", "token"]
+
+[[rules]]
+id = "codefence-vercel-token"
+description = "Vercel token"
+regex = '''(?i)(VERCEL_TOKEN|vercel_token)\s*[:=]\s*[A-Za-z0-9_-]{20,}'''
+keywords = ["vercel", "token"]
+
+[[rules]]
+id = "codefence-azure-storage-key"
+description = "Azure storage key"
+regex = '''(?i)(AccountKey|AZURE_STORAGE_KEY)\s*[:=]\s*[A-Za-z0-9+/=]{60,}'''
+keywords = ["azure", "storage", "key"]
+
+[[rules]]
+id = "codefence-gcp-service-account"
+description = "GCP service account key"
+regex = '''(?i)"type"\s*:\s*"service_account"'''
+keywords = ["service_account", "google"]
+
+[[rules]]
+id = "codefence-gcp-api-key"
+description = "GCP API key"
+regex = '''AIza[0-9A-Za-z_-]{35}'''
+keywords = ["AIza", "google", "api-key"]

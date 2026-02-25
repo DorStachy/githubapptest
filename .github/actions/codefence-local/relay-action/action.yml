@@ -1,0 +1,31 @@
+name: 'CodeFence Fork Relay'
+description: 'Validates fork artifact and relays results to CodeFence backend'
+inputs:
+  api-key:
+    description: 'CodeFence runner API key (cfr_*)'
+    required: true
+  artifact-path:
+    description: 'Path to codefence-relay-artifact.json'
+    required: true
+  codefence-api-url:
+    description: 'CodeFence Results API URL'
+    required: false
+    default: 'https://api.codefence.io'
+runs:
+  using: 'composite'
+  steps:
+    - name: Execute relay upload
+      shell: bash
+      env:
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_ARTIFACT_PATH: ${{ inputs.artifact-path }}
+        INPUT_CODEFENCE_API_URL: ${{ inputs.codefence-api-url }}
+      run: |
+        set -euo pipefail
+
+        if [[ ! -f "${GITHUB_ACTION_PATH}/../dist/relay-action/relay.js" ]]; then
+          npm ci --prefix "${GITHUB_ACTION_PATH}/.."
+          npm run build --prefix "${GITHUB_ACTION_PATH}/.."
+        fi
+
+        node "${GITHUB_ACTION_PATH}/../dist/relay-action/relay.js"

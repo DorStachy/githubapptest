@@ -1,0 +1,29 @@
+name: CodeFence Fork Rerun (Maintainer)
+on:
+  workflow_dispatch:
+    inputs:
+      pr-number:
+        description: 'PR number to scan'
+        required: true
+      head-sha:
+        description: 'Head SHA of fork PR'
+        required: true
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.head-sha }}
+
+      - uses: codefence/scan-action@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        with:
+          api-key: ${{ secrets.CODEFENCE_API_KEY }}
+          evidence-mode: minimal
+          fork-mode: maintainer-rerun

@@ -1,0 +1,23 @@
+# UNSAFE: Push workflow reads from cache with same key as PR writer
+# Paired with unsafe-cache-pr-writer.yml for cross-workflow analysis
+name: Deploy (Unsafe Cache Reader)
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            deps-
+
+      - run: npm run build
+      - run: npm run deploy

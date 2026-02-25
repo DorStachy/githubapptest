@@ -1,0 +1,31 @@
+# UNSAFE: broad permissions combined with secret access
+name: Broad Permissions (Unsafe)
+on:
+  push:
+    branches: [main]
+
+jobs:
+  overprivileged:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy with secrets
+        run: ./deploy.sh
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  many-write-scopes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Release
+        run: ./release.sh
+        env:
+          RELEASE_KEY: ${{ secrets.RELEASE_KEY }}

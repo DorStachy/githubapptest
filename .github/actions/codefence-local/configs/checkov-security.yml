@@ -1,0 +1,11 @@
+framework:
+  - terraform
+  - kubernetes
+  - dockerfile
+  - github_actions
+skip-check:
+  - CKV2_AWS_5
+  - CKV2_AWS_6
+  - CKV2_K8S_12
+quiet: true
+compact: true

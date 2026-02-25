@@ -1,0 +1,21 @@
+# UNSAFE: workflow with untrusted input in run: steps
+name: PR Handler (Unsafe)
+on:
+  pull_request_target:
+    types: [opened, edited]
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo PR title
+        run: |
+          echo "Processing: ${{ github.event.pull_request.title }}"
+
+      - name: Process body
+        run: |
+          echo "${{ github.event.pull_request.body }}" > /tmp/body.txt
+          cat /tmp/body.txt
+
+      - name: Safe step (no untrusted input)
+        run: echo "Hello World"

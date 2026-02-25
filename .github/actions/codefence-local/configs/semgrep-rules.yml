@@ -1,0 +1,253 @@
+# STRICT MODE VENDORED RULES
+#
+# This file contains 26 security-focused Semgrep rules covering 20 vulnerability classes.
+# It is used in strict/offline mode where registry access is unavailable.
+#
+# IMPORTANT: This is a SUBSET of the rules available in standard mode (300+ rules).
+# See docs/strict-mode-coverage.md for the full coverage matrix.
+#
+# Last synced from Semgrep registry: 2026-02-13
+# Update procedure: Pull latest p/security-audit rules, filter to security-only,
+# test against coverage-guardrails repo, commit updated file.
+rules:
+  - id: codefence.javascript.sql-injection.concat
+    message: Potential SQL injection via string concatenation in query execution.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: $DB.query($SQL + $USER_INPUT)
+          - pattern: $DB.execute($SQL + $USER_INPUT)
+          - pattern: $CLIENT.query($SQL + $USER_INPUT)
+
+  - id: codefence.javascript.xss.innerhtml
+    message: Potential XSS via unsafe assignment to innerHTML.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-either:
+      - pattern: $EL.innerHTML = $CONTENT
+      - pattern: document.write($CONTENT)
+
+  - id: codefence.python.sql-injection.formatting
+    message: Potential SQL injection via dynamic SQL string construction.
+    languages:
+      - python
+    severity: ERROR
+    pattern-either:
+      - pattern: $CURSOR.execute($QUERY % $ARGS)
+      - pattern: $CURSOR.execute($QUERY.format(...))
+      - pattern: $CURSOR.execute("..." + $USER_INPUT)
+
+  - id: codefence.python.dangerous-subprocess-use
+    message: Potential command injection using shell execution with untrusted input.
+    languages:
+      - python
+    severity: WARNING
+    pattern-either:
+      - pattern: subprocess.$F(..., shell=True, ...)
+      - pattern: os.system($CMD)
+
+  - id: codefence.javascript.ssrf.user-controlled-url
+    message: Potential SSRF via network request using user-controlled URL.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-either:
+      - pattern: fetch($REQ.query.$URL)
+      - pattern: axios.get($REQ.query.$URL)
+      - pattern: $CLIENT.get($REQ.query.$URL)
+
+  - id: codefence.python.ssrf.user-controlled-url
+    message: Potential SSRF via requests call with user-controlled URL.
+    languages:
+      - python
+    severity: ERROR
+    pattern-either:
+      - pattern: requests.get($REQ.args[$KEY])
+      - pattern: requests.post($REQ.args[$KEY])
+      - pattern: urllib.request.urlopen($REQ.args[$KEY])
+
+  - id: codefence.javascript.path-traversal.readfile
+    message: Potential path traversal via untrusted path in filesystem read.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-either:
+      - pattern: fs.readFile($REQ.params.$PATH, ...)
+      - pattern: fs.readFileSync($REQ.params.$PATH, ...)
+      - pattern: fs.createReadStream($REQ.query.$PATH, ...)
+
+  - id: codefence.python.path-traversal.open
+    message: Potential path traversal using untrusted file path.
+    languages:
+      - python
+    severity: ERROR
+    pattern-either:
+      - pattern: open($request.args[$KEY], ...)
+      - pattern: open($request.form[$KEY], ...)
+
+  - id: codefence.javascript.weak-crypto.hash
+    message: Weak hashing algorithm detected (MD5/SHA1).
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-either:
+      - pattern: crypto.createHash("md5")
+      - pattern: crypto.createHash("sha1")
+
+  - id: codefence.python.weak-crypto.hashlib
+    message: Weak hashing algorithm detected (MD5/SHA1).
+    languages:
+      - python
+    severity: WARNING
+    pattern-either:
+      - pattern: hashlib.md5(...)
+      - pattern: hashlib.sha1(...)
+
+  - id: codefence.javascript.unsafe-jwt-ignore-expiration
+    message: JWT verification ignores expiration.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern: |
+      jwt.verify($TOKEN, $SECRET, { ..., ignoreExpiration: true, ... })
+
+  - id: codefence.python.unsafe-jwt-no-verification
+    message: JWT decode disables signature verification.
+    languages:
+      - python
+    severity: WARNING
+    pattern-either:
+      - pattern: |
+          jwt.decode($TOKEN, options={"verify_signature": False, ...})
+      - pattern: |
+          jwt.decode($TOKEN, verify=False)
+
+  - id: codefence.generic.detected-token-assignment
+    message: Potential hardcoded credential/token assignment.
+    languages:
+      - generic
+    severity: ERROR
+    pattern-regex: (?i)(api[_-]?key|token|secret)\s*[:=]\s*["'][A-Za-z0-9_\/+=.-]{20,}["']
+
+  - id: codefence.javascript.sql-injection.template-literal
+    message: Potential SQL injection via template literal interpolation.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-regex: (?is)`\s*(select|insert|update|delete)[^`]*\$\{[^}]+\}[^`]*`
+
+  - id: codefence.javascript.logging.password-exposure
+    message: Potential sensitive data exposure by logging password fields.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: (?i)(logger|console)\.(log|info|warn|error)\s*\([^\n]*password
+
+  - id: codefence.javascript.unsafe-jwt-decode
+    message: JWT decoded without signature verification.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: \bjwt\.decode\s*\(
+
+  - id: codefence.javascript.idor.direct-object-reference
+    message: Potential IDOR via direct object lookup by route parameter.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-regex: (?s)router\.(get|post|put|patch)\s*\(\s*["'][^"']*:[^"']+["'][^\)]*\)\s*=>\s*\{[^}]*req\.params\.[A-Za-z_][A-Za-z0-9_]*[^}]*res\.json\(\s*[A-Za-z_][A-Za-z0-9_]*\s*\)
+
+  - id: codefence.javascript.missing-admin-authorization
+    message: Potential missing authorization check on admin route.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    paths:
+      include:
+        - "**/*admin*routes*.js"
+        - "**/*admin*routes*.ts"
+    pattern-regex: (?s)router\.(get|post|put|patch)\s*\(\s*["'][^"']+["']\s*,\s*\(_?req\s*,\s*res\)\s*=>\s*\{[^}]*res\.json\(
+
+  - id: codefence.javascript.unrestricted-file-upload
+    message: Potential unrestricted file upload without file type validation.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: "\\bmulter\\s*\\(\\s*\\{\\s*storage\\s*:"
+
+  - id: codefence.javascript.open-redirect
+    message: Potential open redirect using untrusted request input.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: (?s)const\s+[A-Za-z_][A-Za-z0-9_]*\s*=\s*req\.query\.[A-Za-z_][A-Za-z0-9_]*[^\n]*\n[^\n]*res\.redirect\s*\(
+
+  - id: codefence.javascript.prototype-pollution-merge
+    message: Potential prototype pollution via unsafe deep merge.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: \b(_\.)?merge\s*\(\s*\{\s*\}\s*,
+
+  - id: codefence.javascript.ssrf.untrusted-url-argument
+    message: Potential SSRF via forwarding user-controlled URL to request helper.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-regex: \b[A-Za-z_][A-Za-z0-9_]*\s*\(\s*req\.(query|body)\.[A-Za-z_][A-Za-z0-9_]*\s*\)
+
+  - id: codefence.javascript.insecure-random-token
+    message: Potential insecure token/session generation using Math.random.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: (?s)function\s+[A-Za-z_][A-Za-z0-9_]*(token|session|auth)[A-Za-z0-9_]*\s*\([^\)]*\)\s*\{[^}]*Math\.random\s*\(
+
+  - id: codefence.javascript.predictable-tempfile
+    message: Predictable temporary file path for sensitive data.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-regex: "(\\\"|')/tmp/[A-Za-z0-9._-]+(\\\"|')"
+
+  - id: codefence.javascript.dynamic-function-execution
+    message: Dynamic code execution via Function constructor.
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR
+    pattern-regex: \b(Function|new\s+Function)\s*\(
+
+  - id: codefence.javascript.command-exec.child-process
+    message: Potential command execution via Node child_process APIs.
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    pattern-either:
+      - pattern: exec($CMD, ...)
+      - pattern: execSync($CMD, ...)
+      - pattern: spawn($CMD, ...)
+      - pattern: spawnSync($CMD, ...)
+      - pattern: child_process.exec($CMD, ...)
+      - pattern: child_process.execSync($CMD, ...)

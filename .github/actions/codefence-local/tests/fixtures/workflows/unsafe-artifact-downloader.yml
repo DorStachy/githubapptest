@@ -1,0 +1,23 @@
+# UNSAFE: workflow_run downloads artifact from PR without integrity check
+# Paired with unsafe-artifact-uploader.yml for cross-workflow analysis
+name: Deploy (Artifact Downloader)
+on:
+  workflow_run:
+    workflows: ["PR Build (Artifact Uploader)"]
+    types: [completed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+
+      - name: Deploy without verification
+        run: |
+          cd dist/
+          npm run deploy

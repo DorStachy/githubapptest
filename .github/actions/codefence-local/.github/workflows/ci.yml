@@ -1,0 +1,25 @@
+name: github-action-ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-configs:
+    name: Validate Scanner Configs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Semgrep
+        run: pip install semgrep==1.67.0
+
+      - name: Validate Semgrep rules
+        working-directory: github-action
+        run: semgrep --validate --config configs/semgrep-rules.yml

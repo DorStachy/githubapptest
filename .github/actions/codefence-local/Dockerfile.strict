@@ -1,0 +1,96 @@
+﻿# syntax=docker/dockerfile:1.7
+
+# NOTE: Replace digest with approved pinned digest in release pipeline.
+FROM ubuntu:22.04@sha256:16e7f65d4a2f6d2f6af4b4fbe4bc3a6f16f4bdce0cd58b0f11516f55b3e3d8b1
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG GITLEAKS_VERSION=8.18.4
+ARG TRIVY_VERSION=0.55.0
+ARG CODEQL_VERSION=2.16.1
+ARG PIP_AUDIT_VERSION=2.7.3
+ARG SEMGREP_VERSION=1.89.0
+ARG BANDIT_VERSION=1.7.10
+ARG OSV_SCANNER_VERSION=1.8.2
+ARG ACTIONLINT_VERSION=1.7.4
+ARG ZIZMOR_VERSION=1.5.1
+ARG CHECKOV_VERSION=3.2.312
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  jq \
+  dnsutils \
+  nftables \
+  git \
+  unzip \
+  python3 \
+  python3-pip \
+  nodejs \
+  npm \
+  bash \
+  coreutils \
+  iproute2 \
+  iputils-ping \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/codefence
+
+COPY package.json package.json
+COPY tsconfig.json tsconfig.json
+COPY jest.config.js jest.config.js
+COPY scripts scripts
+COPY relay-action relay-action
+COPY configs configs
+
+RUN npm ci && npm run build
+
+# Prebundle Python-based scanners.
+RUN python3 -m pip install --no-cache-dir \
+  "semgrep==${SEMGREP_VERSION}" \
+  "bandit==${BANDIT_VERSION}" \
+  "pip-audit==${PIP_AUDIT_VERSION}" \
+  "checkov==${CHECKOV_VERSION}" \
+  "zizmor==${ZIZMOR_VERSION}"
+
+# Prebundle release-binary scanners with checksum verification.
+RUN set -eux; \
+  mkdir -p /tmp/codefence-downloads /opt/codefence/scanners/codeql; \
+  cd /tmp/codefence-downloads; \
+  curl -fsSL --retry 3 --retry-delay 1 "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"; \
+  curl -fsSL --retry 3 --retry-delay 1 "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -o "trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"; \
+  curl -fsSL --retry 3 --retry-delay 1 "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" -o "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"; \
+  curl -fsSL --retry 3 --retry-delay 1 "https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}/osv-scanner_linux_amd64" -o "osv-scanner_linux_amd64"; \
+  curl -fsSL --retry 3 --retry-delay 1 "https://github.com/github/codeql-cli-binaries/releases/download/v${CODEQL_VERSION}/codeql-linux64.zip" -o "codeql-linux64.zip"; \
+  grep " gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz$" /opt/codefence/configs/checksums.sha256 | sha256sum -c -; \
+  grep " trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz$" /opt/codefence/configs/checksums.sha256 | sha256sum -c -; \
+  grep " actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz$" /opt/codefence/configs/checksums.sha256 | sha256sum -c -; \
+  grep " osv-scanner_linux_amd64$" /opt/codefence/configs/checksums.sha256 | sha256sum -c -; \
+  grep " codeql-linux64.zip$" /opt/codefence/configs/checksums.sha256 | sha256sum -c -; \
+  tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -C /usr/local/bin gitleaks; \
+  tar -xzf "trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -C /usr/local/bin trivy; \
+  tar -xzf "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" -C /usr/local/bin actionlint; \
+  install -m 0755 "osv-scanner_linux_amd64" /usr/local/bin/osv-scanner; \
+  unzip -q "codeql-linux64.zip" -d /opt/codefence/scanners/codeql; \
+  ln -sf /opt/codefence/scanners/codeql/codeql/codeql /usr/local/bin/codeql; \
+  rm -rf /tmp/codefence-downloads
+
+# Offline advisory DB mount points (filled by release pipeline).
+RUN mkdir -p /opt/advisory-db/osv /opt/advisory-db/trivy /opt/advisory-db/pip-audit
+
+# Runtime helpers and strict-mode scripts.
+COPY scripts/egress-strict.sh /opt/codefence/egress-strict.sh
+COPY scripts/validate-egress.sh /opt/codefence/validate-egress.sh
+COPY scripts/run-scanners.sh /opt/codefence/run-scanners.sh
+COPY scripts/verify-binary.sh /opt/codefence/verify-binary.sh
+COPY scripts/sink-guard.sh /opt/codefence/sink-guard.sh
+
+RUN chmod +x /opt/codefence/egress-strict.sh \
+  /opt/codefence/validate-egress.sh \
+  /opt/codefence/run-scanners.sh \
+  /opt/codefence/verify-binary.sh \
+  /opt/codefence/sink-guard.sh
+
+ENV EGRESS_MODE=strict
+ENV CODEFENCE_RESULTS_DIR=/tmp/codefence-results
+
+ENTRYPOINT ["node", "/opt/codefence/dist/scripts/main.js"]

@@ -1,0 +1,22 @@
+# UNSAFE: broader expression patterns (user-controllable context)
+name: Commit Handler (Mixed)
+on:
+  push:
+    branches: [main]
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log commit message
+        run: |
+          echo "Commit: ${{ github.event.head_commit.message }}"
+
+      - name: Use head ref
+        run: |
+          git checkout ${{ github.head_ref }}
+
+      - name: Safe expression
+        run: |
+          echo "SHA: ${{ github.sha }}"
+          echo "Ref: ${{ github.ref }}"

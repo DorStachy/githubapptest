@@ -1,0 +1,113 @@
+name: 'CodeFence Security Scan'
+description: 'Privacy-first security scanning for pull requests and branches'
+inputs:
+  api-key:
+    description: 'CodeFence runner API key (cfr_*)'
+    required: false
+    default: ''
+  evidence-mode:
+    description: 'minimal | standard | rich'
+    required: false
+    default: 'minimal'
+  egress-mode:
+    description: 'standard | strict'
+    required: false
+    default: 'standard'
+  scanners:
+    description: 'Comma-separated scanner list or "all"'
+    required: false
+    default: 'all'
+  llm-mode:
+    description: 'off | codefence | byo'
+    required: false
+    default: 'codefence'
+  llm-confidence-gate:
+    description: 'strict | balanced | off'
+    required: false
+    default: 'strict'
+  llm-include-snippets:
+    description: 'true | false (only applies in rich mode)'
+    required: false
+    default: 'false'
+  llm-provider:
+    description: 'openai-compatible | anthropic (optional override)'
+    required: false
+    default: ''
+  llm-endpoint:
+    description: 'LLM endpoint URL (optional override)'
+    required: false
+    default: ''
+  llm-model:
+    description: 'LLM model name (optional override)'
+    required: false
+    default: ''
+  fail-on:
+    description: 'fail | warn | never'
+    required: false
+    default: 'fail'
+  fork-mode:
+    description: 'summary-only | artifact-relay | maintainer-rerun'
+    required: false
+    default: 'summary-only'
+  reporting-mode:
+    description: 'Comma-separated reporting channels: check-run,sarif,pr-comment'
+    required: false
+    default: 'check-run'
+  path-privacy:
+    description: 'true | false'
+    required: false
+    default: 'false'
+  codefence-api-url:
+    description: 'CodeFence Results API URL'
+    required: false
+    default: 'https://api.codefence.io'
+  strict-dns-resolvers:
+    description: 'Comma-separated DNS resolver IPs for strict mode'
+    required: false
+    default: ''
+  strict-container:
+    description: 'Container image for strict mode'
+    required: false
+    default: 'ghcr.io/codefence/strict-scanner:v0.1.0'
+outputs:
+  scan-run-id:
+    description: 'Created or reused scan run id'
+runs:
+  using: 'composite'
+  steps:
+    - name: Execute CodeFence scanner pipeline
+      shell: bash
+      env:
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_EVIDENCE_MODE: ${{ inputs.evidence-mode }}
+        INPUT_EGRESS_MODE: ${{ inputs.egress-mode }}
+        INPUT_SCANNERS: ${{ inputs.scanners }}
+        INPUT_LLM_MODE: ${{ inputs.llm-mode }}
+        INPUT_LLM_CONFIDENCE_GATE: ${{ inputs.llm-confidence-gate }}
+        INPUT_LLM_INCLUDE_SNIPPETS: ${{ inputs.llm-include-snippets }}
+        INPUT_LLM_PROVIDER: ${{ inputs.llm-provider }}
+        INPUT_LLM_ENDPOINT: ${{ inputs.llm-endpoint }}
+        INPUT_LLM_MODEL: ${{ inputs.llm-model }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_FORK_MODE: ${{ inputs.fork-mode }}
+        INPUT_REPORTING_MODE: ${{ inputs.reporting-mode }}
+        INPUT_PATH_PRIVACY: ${{ inputs.path-privacy }}
+        INPUT_CODEFENCE_API_URL: ${{ inputs.codefence-api-url }}
+        INPUT_STRICT_DNS_RESOLVERS: ${{ inputs.strict-dns-resolvers }}
+        INPUT_STRICT_CONTAINER: ${{ inputs.strict-container }}
+        GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      run: |
+        set -euo pipefail
+
+        if [[ ! -f "${GITHUB_ACTION_PATH}/dist/scripts/main.js" ]]; then
+          SHARED_SCHEMAS_PATH="${GITHUB_ACTION_PATH}/../shared-schemas"
+          if [[ -d "${SHARED_SCHEMAS_PATH}" ]]; then
+            npm ci --prefix "${SHARED_SCHEMAS_PATH}"
+            npm run build --prefix "${SHARED_SCHEMAS_PATH}"
+          fi
+
+          npm ci --prefix "${GITHUB_ACTION_PATH}"
+          npm run build --prefix "${GITHUB_ACTION_PATH}"
+        fi
+
+        node "${GITHUB_ACTION_PATH}/dist/scripts/main.js"

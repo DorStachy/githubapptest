@@ -1,0 +1,26 @@
+# SAFE: workflow using environment variables for untrusted input
+name: PR Handler (Safe)
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo PR title safely
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Processing: ${PR_TITLE}"
+
+      - name: Use SHA (safe context)
+        run: |
+          echo "SHA: ${{ github.sha }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Event: ${{ github.event_name }}"
+
+      - name: Use non-agent action
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}

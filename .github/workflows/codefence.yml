@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run CodeFence local scanner
-        uses: Ceragon-Prod/GithubApp-Bot-Scanner-Worker/github-action@main
+        uses: ./.github/actions/codefence-local
         with:
           api-key: ${{ secrets.CODEFENCE_API_KEY }}
           evidence-mode: standard

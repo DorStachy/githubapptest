@@ -1,0 +1,20 @@
+# SAFE: Cache keys scoped by event type to prevent cross-workflow poisoning
+name: Build (Safe Cache)
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache dependencies (scoped by event)
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ github.event_name }}-deps-${{ hashFiles('**/package-lock.json') }}
+
+      - run: npm install
+      - run: npm test

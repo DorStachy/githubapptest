@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-02-13",
+  "packages": [
+    "react", "react-dom", "next", "vue", "angular", "typescript", "ts-node", "eslint", "prettier", "jest",
+    "express", "koa", "fastify", "hapi", "lodash", "axios", "moment", "dayjs", "uuid", "dotenv",
+    "mongoose", "sequelize", "typeorm", "prisma", "mysql", "pg", "redis", "kafka", "winston", "pino",
+    "webpack", "vite", "rollup", "esbuild", "babel", "swc", "tailwindcss", "sass", "postcss", "autoprefixer",
+    "vitest", "playwright", "cypress", "storybook", "electron", "socket.io", "rxjs", "zod", "yup", "ajv",
+    "flask", "django", "fastapi", "requests", "urllib3", "numpy", "pandas", "scipy", "matplotlib", "scikit-learn",
+    "pytest", "pydantic", "sqlalchemy", "alembic", "celery", "uvicorn", "gunicorn", "click", "rich", "black",
+    "mypy", "pip", "setuptools", "wheel", "boto3", "botocore", "beautifulsoup4", "lxml", "jinja2", "cryptography",
+    "torch", "tensorflow", "keras", "transformers", "huggingface-hub", "xgboost", "lightgbm", "opencv-python", "Pillow", "tqdm",
+    "grpcio", "protobuf", "pyyaml", "tomli", "httpx", "aiohttp", "pymongo", "psycopg2", "orjson", "marshmallow",
+    "scikit-image", "networkx", "sympy", "sqlparse", "pytest-cov", "coverage", "notebook", "jupyterlab", "ipython", "pyarrow"
+  ]
+}

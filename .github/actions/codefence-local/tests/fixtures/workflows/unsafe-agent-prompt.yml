@@ -1,0 +1,24 @@
+# UNSAFE: workflow feeding untrusted input into AI agent action
+name: AI Agent Review (Unsafe)
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  agent-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Copilot Agent
+        uses: github/copilot-swe-agent@v1
+        with:
+          prompt: |
+            Review this code change:
+            ${{ github.event.comment.body }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Claude Agent
+        uses: anthropics/claude-code-action@v1
+        with:
+          instructions: ${{ github.event.issue.body }}

@@ -1,0 +1,68 @@
+name: 'CodeFence Security Scan (Strict Container)'
+description: 'Strict mode container variant for CodeFence scan action'
+inputs:
+  api-key:
+    description: 'CodeFence runner API key (cfr_*)'
+    required: false
+    default: ''
+  evidence-mode:
+    description: 'minimal | standard | rich'
+    required: false
+    default: 'minimal'
+  scanners:
+    description: 'Comma-separated scanner list or "all"'
+    required: false
+    default: 'all'
+  llm-mode:
+    description: 'off | codefence | byo'
+    required: false
+    default: 'off'
+  llm-confidence-gate:
+    description: 'strict | balanced | off'
+    required: false
+    default: 'strict'
+  llm-include-snippets:
+    description: 'true | false (only applies in rich mode)'
+    required: false
+    default: 'false'
+  llm-provider:
+    description: 'openai-compatible | anthropic (optional override)'
+    required: false
+    default: ''
+  llm-endpoint:
+    description: 'LLM endpoint URL (optional override)'
+    required: false
+    default: ''
+  llm-model:
+    description: 'LLM model name (optional override)'
+    required: false
+    default: ''
+  fail-on:
+    description: 'fail | warn | never'
+    required: false
+    default: 'fail'
+  fork-mode:
+    description: 'summary-only | artifact-relay | maintainer-rerun'
+    required: false
+    default: 'summary-only'
+  reporting-mode:
+    description: 'Comma-separated reporting channels: check-run,sarif,pr-comment'
+    required: false
+    default: 'check-run'
+  path-privacy:
+    description: 'true | false'
+    required: false
+    default: 'false'
+  codefence-api-url:
+    description: 'CodeFence Results API URL'
+    required: false
+    default: 'https://api.codefence.io'
+  strict-dns-resolvers:
+    description: 'Comma-separated DNS resolver IPs for strict mode'
+    required: false
+    default: ''
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/codefence/strict-scanner:v0.1.0'
+  env:
+    INPUT_EGRESS_MODE: strict

@@ -1,0 +1,29 @@
+name: CodeFence Fork PR Relay
+on:
+  workflow_run:
+    workflows: ["CodeFence Security Scan"]
+    types: [completed]
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  relay:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: codefence-fork-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: codefence/relay-action@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        with:
+          api-key: ${{ secrets.CODEFENCE_API_KEY }}
+          artifact-path: codefence-fork-results/codefence-relay-artifact.json

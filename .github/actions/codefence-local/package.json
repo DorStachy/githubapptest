@@ -1,0 +1,28 @@
+{
+  "name": "@codefence/scan-action",
+  "version": "0.1.0",
+  "description": "CodeFence GitHub Action (Phase 3)",
+  "private": true,
+  "main": "dist/scripts/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "test": "jest --config jest.config.js --runInBand"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
+    "@cera/shared-schemas": "file:../shared-schemas",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.17.24",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.10",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.8.2"
+  }
+}

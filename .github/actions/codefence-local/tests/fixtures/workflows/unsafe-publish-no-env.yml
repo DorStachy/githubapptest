@@ -1,0 +1,34 @@
+# UNSAFE: publish secrets used without environment gating (push trigger)
+name: Release Pipeline (No Environment)
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish to PyPI
+        run: twine upload dist/*
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+  deploy-aws:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: aws deploy
+        env:
+          AWS_DEPLOY_KEY: ${{ secrets.AWS_DEPLOY_KEY }}
