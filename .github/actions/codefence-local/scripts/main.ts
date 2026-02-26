@@ -367,9 +367,12 @@ async function main(): Promise<void> {
 
   runScript(path.join(actionRoot, 'scripts', 'run-scanners.sh'), sharedEnv);
 
+  process.stdout.write('[debug] Scanners complete. Collecting findings...\n');
   const findings = collectNormalizedFindings(workspace, resultsDir);
+  process.stdout.write(`[debug] Collected ${findings.length} findings. Applying evidence mode...\n`);
   const afterEvidence = applyEvidenceMode(findings, evidenceMode);
   const redacted = redactFindings(afterEvidence);
+  process.stdout.write(`[debug] Redacted to ${redacted.length} findings. Writing output...\n`);
 
   const outputFindingsPath = path.join(resultsDir, 'normalized-findings.json');
   writeJsonFile(outputFindingsPath, redacted);
@@ -437,6 +440,7 @@ async function main(): Promise<void> {
   const headRef = event.pull_request?.head?.ref ?? process.env.GITHUB_HEAD_REF ?? undefined;
   const baseRef = event.pull_request?.base?.ref ?? process.env.GITHUB_BASE_REF ?? undefined;
 
+  process.stdout.write(`[debug] Uploading ${redacted.length} findings to ${config.apiBaseUrl}...\n`);
   const upload = await uploadResults(config, {
     installationId,
     repositoryFullName:
@@ -486,7 +490,14 @@ async function main(): Promise<void> {
 
 if (require.main === module) {
   main().catch((error) => {
-    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+    if (error instanceof Error) {
+      process.stderr.write(`${error.message}\n`);
+      if (error.stack) {
+        process.stderr.write(`Stack trace:\n${error.stack}\n`);
+      }
+    } else {
+      process.stderr.write(`${String(error)}\n`);
+    }
     process.exit(1);
   });
 }
