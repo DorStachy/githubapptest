@@ -1,0 +1,236 @@
+﻿codefence	Set up job	∩╗┐2026-02-26T00:01:16.4160084Z Current runner version: '2.331.0'
+codefence	Set up job	2026-02-26T00:01:16.4185614Z ##[group]Runner Image Provisioner
+codefence	Set up job	2026-02-26T00:01:16.4186630Z Hosted Compute Agent
+codefence	Set up job	2026-02-26T00:01:16.4187222Z Version: 20260213.493
+codefence	Set up job	2026-02-26T00:01:16.4187845Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+codefence	Set up job	2026-02-26T00:01:16.4188689Z Build Date: 2026-02-13T00:28:41Z
+codefence	Set up job	2026-02-26T00:01:16.4189669Z Worker ID: {4c135d5b-ac40-4ac2-aefb-43a3e662d2e7}
+codefence	Set up job	2026-02-26T00:01:16.4190506Z Azure Region: eastus
+codefence	Set up job	2026-02-26T00:01:16.4191031Z ##[endgroup]
+codefence	Set up job	2026-02-26T00:01:16.4192532Z ##[group]Operating System
+codefence	Set up job	2026-02-26T00:01:16.4193216Z Ubuntu
+codefence	Set up job	2026-02-26T00:01:16.4193727Z 24.04.3
+codefence	Set up job	2026-02-26T00:01:16.4194165Z LTS
+codefence	Set up job	2026-02-26T00:01:16.4194727Z ##[endgroup]
+codefence	Set up job	2026-02-26T00:01:16.4195273Z ##[group]Runner Image
+codefence	Set up job	2026-02-26T00:01:16.4195872Z Image: ubuntu-24.04
+codefence	Set up job	2026-02-26T00:01:16.4196405Z Version: 20260224.36.1
+codefence	Set up job	2026-02-26T00:01:16.4197460Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+codefence	Set up job	2026-02-26T00:01:16.4199172Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+codefence	Set up job	2026-02-26T00:01:16.4200481Z ##[endgroup]
+codefence	Set up job	2026-02-26T00:01:16.4201833Z ##[group]GITHUB_TOKEN Permissions
+codefence	Set up job	2026-02-26T00:01:16.4203677Z Contents: read
+codefence	Set up job	2026-02-26T00:01:16.4204253Z Metadata: read
+codefence	Set up job	2026-02-26T00:01:16.4204901Z PullRequests: write
+codefence	Set up job	2026-02-26T00:01:16.4205502Z SecurityEvents: write
+codefence	Set up job	2026-02-26T00:01:16.4206012Z ##[endgroup]
+codefence	Set up job	2026-02-26T00:01:16.4208447Z Secret source: Actions
+codefence	Set up job	2026-02-26T00:01:16.4209349Z Prepare workflow directory
+codefence	Set up job	2026-02-26T00:01:16.4531137Z Prepare all required actions
+codefence	Set up job	2026-02-26T00:01:16.4568502Z Getting action download info
+codefence	Set up job	2026-02-26T00:01:16.7164486Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+codefence	Set up job	2026-02-26T00:01:16.9470855Z Complete job name: codefence
+codefence	Checkout	∩╗┐2026-02-26T00:01:17.0184163Z ##[group]Run actions/checkout@v4
+codefence	Checkout	2026-02-26T00:01:17.0185014Z with:
+codefence	Checkout	2026-02-26T00:01:17.0185449Z   repository: DorStachy/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.0186157Z   token: ***
+codefence	Checkout	2026-02-26T00:01:17.0186555Z   ssh-strict: true
+codefence	Checkout	2026-02-26T00:01:17.0187068Z   ssh-user: git
+codefence	Checkout	2026-02-26T00:01:17.0187695Z   persist-credentials: true
+codefence	Checkout	2026-02-26T00:01:17.0188297Z   clean: true
+codefence	Checkout	2026-02-26T00:01:17.0188834Z   sparse-checkout-cone-mode: true
+codefence	Checkout	2026-02-26T00:01:17.0189473Z   fetch-depth: 1
+codefence	Checkout	2026-02-26T00:01:17.0189872Z   fetch-tags: false
+codefence	Checkout	2026-02-26T00:01:17.0190273Z   show-progress: true
+codefence	Checkout	2026-02-26T00:01:17.0190685Z   lfs: false
+codefence	Checkout	2026-02-26T00:01:17.0191058Z   submodules: false
+codefence	Checkout	2026-02-26T00:01:17.0191465Z   set-safe-directory: true
+codefence	Checkout	2026-02-26T00:01:17.0192185Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.1290829Z Syncing repository: DorStachy/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.1292580Z ##[group]Getting Git version info
+codefence	Checkout	2026-02-26T00:01:17.1293356Z Working directory is '/home/runner/work/githubapptest/githubapptest'
+codefence	Checkout	2026-02-26T00:01:17.1294432Z [command]/usr/bin/git version
+codefence	Checkout	2026-02-26T00:01:17.1370852Z git version 2.53.0
+codefence	Checkout	2026-02-26T00:01:17.1398352Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.1414754Z Temporarily overriding HOME='/home/runner/work/_temp/4214115b-e87a-4da7-8dbc-a95620a85315' before making global git config changes
+codefence	Checkout	2026-02-26T00:01:17.1417154Z Adding repository directory to the temporary git global config as a safe directory
+codefence	Checkout	2026-02-26T00:01:17.1421714Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/githubapptest/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.1462268Z Deleting the contents of '/home/runner/work/githubapptest/githubapptest'
+codefence	Checkout	2026-02-26T00:01:17.1465977Z ##[group]Initializing the repository
+codefence	Checkout	2026-02-26T00:01:17.1471556Z [command]/usr/bin/git init /home/runner/work/githubapptest/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.1560260Z hint: Using 'master' as the name for the initial branch. This default branch name
+codefence	Checkout	2026-02-26T00:01:17.1561624Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+codefence	Checkout	2026-02-26T00:01:17.1562580Z hint: to use in all of your new repositories, which will suppress this warning,
+codefence	Checkout	2026-02-26T00:01:17.1563933Z hint: call:
+codefence	Checkout	2026-02-26T00:01:17.1564653Z hint:
+codefence	Checkout	2026-02-26T00:01:17.1565349Z hint: 	git config --global init.defaultBranch <name>
+codefence	Checkout	2026-02-26T00:01:17.1566432Z hint:
+codefence	Checkout	2026-02-26T00:01:17.1567464Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+codefence	Checkout	2026-02-26T00:01:17.1569121Z hint: 'development'. The just-created branch can be renamed via this command:
+codefence	Checkout	2026-02-26T00:01:17.1570785Z hint:
+codefence	Checkout	2026-02-26T00:01:17.1571707Z hint: 	git branch -m <name>
+codefence	Checkout	2026-02-26T00:01:17.1572523Z hint:
+codefence	Checkout	2026-02-26T00:01:17.1573565Z hint: Disable this message with "git config set advice.defaultBranchName false"
+codefence	Checkout	2026-02-26T00:01:17.1575420Z Initialized empty Git repository in /home/runner/work/githubapptest/githubapptest/.git/
+codefence	Checkout	2026-02-26T00:01:17.1578475Z [command]/usr/bin/git remote add origin https://github.com/DorStachy/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.1613846Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.1615111Z ##[group]Disabling automatic garbage collection
+codefence	Checkout	2026-02-26T00:01:17.1619000Z [command]/usr/bin/git config --local gc.auto 0
+codefence	Checkout	2026-02-26T00:01:17.1649876Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.1651227Z ##[group]Setting up auth
+codefence	Checkout	2026-02-26T00:01:17.1657570Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+codefence	Checkout	2026-02-26T00:01:17.1690735Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+codefence	Checkout	2026-02-26T00:01:17.2022960Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+codefence	Checkout	2026-02-26T00:01:17.2055786Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+codefence	Checkout	2026-02-26T00:01:17.2289466Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+codefence	Checkout	2026-02-26T00:01:17.2329470Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+codefence	Checkout	2026-02-26T00:01:17.2565103Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+codefence	Checkout	2026-02-26T00:01:17.2600043Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.2600813Z ##[group]Fetching the repository
+codefence	Checkout	2026-02-26T00:01:17.2608293Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +669f8f4523710151198232f679035f1303044b2e:refs/remotes/pull/10/merge
+codefence	Checkout	2026-02-26T00:01:17.7048846Z From https://github.com/DorStachy/githubapptest
+codefence	Checkout	2026-02-26T00:01:17.7051302Z  * [new ref]         669f8f4523710151198232f679035f1303044b2e -> pull/10/merge
+codefence	Checkout	2026-02-26T00:01:17.7089670Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.7091384Z ##[group]Determining the checkout info
+codefence	Checkout	2026-02-26T00:01:17.7092596Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.7095892Z [command]/usr/bin/git sparse-checkout disable
+codefence	Checkout	2026-02-26T00:01:17.7138203Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+codefence	Checkout	2026-02-26T00:01:17.7165935Z ##[group]Checking out the ref
+codefence	Checkout	2026-02-26T00:01:17.7169714Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/10/merge
+codefence	Checkout	2026-02-26T00:01:17.8890894Z Note: switching to 'refs/remotes/pull/10/merge'.
+codefence	Checkout	2026-02-26T00:01:17.8892132Z 
+codefence	Checkout	2026-02-26T00:01:17.8892955Z You are in 'detached HEAD' state. You can look around, make experimental
+codefence	Checkout	2026-02-26T00:01:17.8895141Z changes and commit them, and you can discard any commits you make in this
+codefence	Checkout	2026-02-26T00:01:17.8897453Z state without impacting any branches by switching back to a branch.
+codefence	Checkout	2026-02-26T00:01:17.8898789Z 
+codefence	Checkout	2026-02-26T00:01:17.8899708Z If you want to create a new branch to retain commits you create, you may
+codefence	Checkout	2026-02-26T00:01:17.8901957Z do so (now or later) by using -c with the switch command. Example:
+codefence	Checkout	2026-02-26T00:01:17.8902958Z 
+codefence	Checkout	2026-02-26T00:01:17.8903272Z   git switch -c <new-branch-name>
+codefence	Checkout	2026-02-26T00:01:17.8903992Z 
+codefence	Checkout	2026-02-26T00:01:17.8904364Z Or undo this operation with:
+codefence	Checkout	2026-02-26T00:01:17.8904860Z 
+codefence	Checkout	2026-02-26T00:01:17.8905117Z   git switch -
+codefence	Checkout	2026-02-26T00:01:17.8905744Z 
+codefence	Checkout	2026-02-26T00:01:17.8906399Z Turn off this advice by setting config variable advice.detachedHead to false
+codefence	Checkout	2026-02-26T00:01:17.8907382Z 
+codefence	Checkout	2026-02-26T00:01:17.8908631Z HEAD is now at 669f8f4 Merge 17e91c45ea87fe302c2ce32fb618c03fca7dabdf into fbc835e5077bcbb2614c75222e6a977b212e6f7e
+codefence	Checkout	2026-02-26T00:01:17.8912909Z ##[endgroup]
+codefence	Checkout	2026-02-26T00:01:17.8947300Z [command]/usr/bin/git log -1 --format=%H
+codefence	Checkout	2026-02-26T00:01:17.8973081Z 669f8f4523710151198232f679035f1303044b2e
+codefence	Run CodeFence local scanner	∩╗┐2026-02-26T00:01:17.9446399Z Prepare all required actions
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9707290Z ##[group]Run ./.github/actions/codefence-local
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9708250Z with:
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9710096Z   api-key: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9710762Z   evidence-mode: standard
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9711493Z   llm-mode: codefence
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9712154Z   scanners: all
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9712904Z   reporting-mode: check-run,sarif,pr-comment
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9713829Z   fail-on: never
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9714467Z   egress-mode: standard
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9715285Z   llm-confidence-gate: strict
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9716106Z   llm-include-snippets: false
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9716902Z   fork-mode: summary-only
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9717634Z   path-privacy: false
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9718417Z   codefence-api-url: https://api.cera.buzz
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9719672Z   strict-container: ghcr.io/codefence/strict-scanner:v0.1.0
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9720726Z env:
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9721350Z   CODEFENCE_INSTALLATION_ID: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9723703Z   CODEFENCE_SIGNING_SECRET: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9724520Z ##[endgroup]
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9827130Z ##[group]Run set -euo pipefail
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9828067Z [36;1mset -euo pipefail[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9828824Z [36;1m[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9829886Z [36;1mif [[ ! -f "${GITHUB_ACTION_PATH}/dist/scripts/main.js" ]]; then[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9831385Z [36;1m  SHARED_SCHEMAS_PATH="${GITHUB_ACTION_PATH}/../shared-schemas"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9832693Z [36;1m  if [[ -d "${SHARED_SCHEMAS_PATH}" ]]; then[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9833859Z [36;1m    npm ci --prefix "${SHARED_SCHEMAS_PATH}"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9835024Z [36;1m    npm run build --prefix "${SHARED_SCHEMAS_PATH}"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9836058Z [36;1m  fi[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9836658Z [36;1m[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9837389Z [36;1m  npm ci --prefix "${GITHUB_ACTION_PATH}"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9838537Z [36;1m  npm run build --prefix "${GITHUB_ACTION_PATH}"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9839656Z [36;1mfi[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9840243Z [36;1m[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9841028Z [36;1mnode "${GITHUB_ACTION_PATH}/dist/scripts/main.js"[0m
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9896487Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9897630Z env:
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9898323Z   CODEFENCE_INSTALLATION_ID: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9901162Z   CODEFENCE_SIGNING_SECRET: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9902985Z   INPUT_API_KEY: ***
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9903684Z   INPUT_EVIDENCE_MODE: standard
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9904509Z   INPUT_EGRESS_MODE: standard
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9905294Z   INPUT_SCANNERS: all
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9905998Z   INPUT_LLM_MODE: codefence
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9906786Z   INPUT_LLM_CONFIDENCE_GATE: strict
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9907663Z   INPUT_LLM_INCLUDE_SNIPPETS: false
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9908507Z   INPUT_LLM_PROVIDER: 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9909324Z   INPUT_LLM_ENDPOINT: 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9910013Z   INPUT_LLM_MODEL: 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9910672Z   INPUT_FAIL_ON: never
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9911402Z   INPUT_FORK_MODE: summary-only
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9912333Z   INPUT_REPORTING_MODE: check-run,sarif,pr-comment
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9913337Z   INPUT_PATH_PRIVACY: false
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9914278Z   INPUT_CODEFENCE_API_URL: https://api.cera.buzz
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9915278Z   INPUT_STRICT_DNS_RESOLVERS: 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9916326Z   INPUT_STRICT_CONTAINER: ghcr.io/codefence/strict-scanner:v0.1.0
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9917483Z   GITHUB_DEFAULT_BRANCH: main
+codefence	Run CodeFence local scanner	2026-02-26T00:01:17.9918233Z ##[endgroup]
+codefence	Run CodeFence local scanner	2026-02-26T00:01:22.9748823Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2776918Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2777653Z added 46 packages, and audited 47 packages in 3s
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2778367Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2778554Z 15 packages are looking for funding
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2778989Z   run `npm fund` for details
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2798656Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2798998Z 1 high severity vulnerability
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2799602Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2799826Z To address all issues, run:
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2800323Z   npm audit fix
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2800559Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.2800697Z Run `npm audit` for details.
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.3938071Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.3938735Z > @cera/shared-schemas@1.1.0 build
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.3939761Z > tsc -p tsconfig.json
+codefence	Run CodeFence local scanner	2026-02-26T00:01:23.3940187Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:26.4545354Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+codefence	Run CodeFence local scanner	2026-02-26T00:01:26.5667026Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.0861556Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8057210Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8057743Z added 332 packages, and audited 336 packages in 3s
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8058289Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8058716Z 47 packages are looking for funding
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8062336Z   run `npm fund` for details
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8124697Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8125114Z 4 vulnerabilities (3 moderate, 1 high)
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8125503Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8125692Z To address all issues, run:
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8126270Z   npm audit fix
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8126581Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.8126745Z Run `npm audit` for details.
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.9581995Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.9582436Z > @codefence/scan-action@0.1.0 build
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.9583154Z > tsc -p tsconfig.json
+codefence	Run CodeFence local scanner	2026-02-26T00:01:27.9583422Z 
+codefence	Run CodeFence local scanner	2026-02-26T00:01:31.0396989Z [ok] reachable: GitHub meta API (https://api.github.com/meta)
+codefence	Run CodeFence local scanner	2026-02-26T00:01:31.0875231Z [ok] reachable: GitHub (https://github.com)
+codefence	Run CodeFence local scanner	2026-02-26T00:01:31.3632613Z ##[warning][warn] unreachable: CodeFence API health/base (https://api.cera.buzz/health | https://api.cera.buzz/api/v1)
+codefence	Run CodeFence local scanner	2026-02-26T00:01:31.3633364Z Egress validation (standard mode) complete
+codefence	Run CodeFence local scanner	2026-02-26T00:11:31.5211792Z Scanner orchestration complete. Status file: /tmp/codefence-results/scanner-status.json
+codefence	Run CodeFence local scanner	2026-02-26T00:11:31.5268537Z Unexpected end of JSON input
+codefence	Run CodeFence local scanner	2026-02-26T00:11:31.5315407Z ##[error]Process completed with exit code 1.
+codefence	Post Checkout	∩╗┐2026-02-26T00:11:31.5466933Z Post job cleanup.
+codefence	Post Checkout	2026-02-26T00:11:31.6454146Z [command]/usr/bin/git version
+codefence	Post Checkout	2026-02-26T00:11:31.6493560Z git version 2.53.0
+codefence	Post Checkout	2026-02-26T00:11:31.6547104Z Temporarily overriding HOME='/home/runner/work/_temp/9f77334d-56b4-48d3-8ced-d7c01df3277e' before making global git config changes
+codefence	Post Checkout	2026-02-26T00:11:31.6548476Z Adding repository directory to the temporary git global config as a safe directory
+codefence	Post Checkout	2026-02-26T00:11:31.6553902Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/githubapptest/githubapptest
+codefence	Post Checkout	2026-02-26T00:11:31.6591662Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+codefence	Post Checkout	2026-02-26T00:11:31.6626587Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+codefence	Post Checkout	2026-02-26T00:11:31.6878420Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+codefence	Post Checkout	2026-02-26T00:11:31.6903554Z http.https://github.com/.extraheader
+codefence	Post Checkout	2026-02-26T00:11:31.6917717Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+codefence	Post Checkout	2026-02-26T00:11:31.6953303Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+codefence	Post Checkout	2026-02-26T00:11:31.7203074Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+codefence	Post Checkout	2026-02-26T00:11:31.7240790Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+codefence	Complete job	∩╗┐2026-02-26T00:11:31.7634376Z Cleaning up orphan processes

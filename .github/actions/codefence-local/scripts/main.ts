@@ -22,6 +22,7 @@ import { normalizeSarifFile } from './normalize-sarif';
 import { normalizeJsonFile } from './normalize-json';
 import { applyEvidenceMode } from './apply-evidence-mode';
 import { redactFindings } from './redact-secrets';
+import { generateDiffContext } from './generate-diff-context';
 import { runSupplyChainHeuristics } from './supply-chain-heuristics';
 import { writeForkSummary } from './fork-summary';
 import { buildForkRelayArtifact } from './fork-artifact-emitter';
@@ -368,7 +369,17 @@ async function main(): Promise<void> {
   runScript(path.join(actionRoot, 'scripts', 'run-scanners.sh'), sharedEnv);
 
   const findings = collectNormalizedFindings(workspace, resultsDir);
-  const afterEvidence = applyEvidenceMode(findings, evidenceMode);
+
+  // ── DLP-safe diff context ────────────────────────────────────
+  // Generate minimal code windows (±3 lines) around each finding.
+  // Uses git diff when a base SHA is available (PR events), otherwise
+  // falls back to a small source-file window. Each context is
+  // hard-capped at 500 chars for data-loss-prevention safety.
+  const baseSha = process.env.GITHUB_BASE_SHA || event.pull_request?.base?.sha || null;
+  const headSha = process.env.GITHUB_SHA || event.pull_request?.head?.sha || null;
+  const withDiffContext = generateDiffContext(findings, workspace, baseSha, headSha);
+
+  const afterEvidence = applyEvidenceMode(withDiffContext, evidenceMode);
   const redacted = redactFindings(afterEvidence);
 
   const outputFindingsPath = path.join(resultsDir, 'normalized-findings.json');

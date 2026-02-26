@@ -226,8 +226,26 @@ export function normalizeSarifFile(
   filePath: string,
   options?: { toolNameOverride?: string; toolVersionOverride?: string; repoRoot?: string },
 ): NormalizedFinding[] {
-  const content = fs.readFileSync(filePath, 'utf8');
-  const parsed = JSON.parse(content) as SarifLog;
+  const content = fs.readFileSync(filePath, 'utf8').trim();
+  if (content.length === 0) {
+    const toolLabel = options?.toolNameOverride || path.basename(filePath);
+    process.stderr.write(
+      `[warn] Skipping empty SARIF file from ${toolLabel}: ${filePath}\n`,
+    );
+    return [];
+  }
+  let parsed: SarifLog;
+  try {
+    parsed = JSON.parse(content) as SarifLog;
+  } catch (err) {
+    const toolLabel = options?.toolNameOverride || path.basename(filePath);
+    process.stderr.write(
+      `[warn] Invalid SARIF JSON from ${toolLabel} (${filePath}): ${
+        err instanceof Error ? err.message : String(err)
+      }\n`,
+    );
+    return [];
+  }
   return normalizeSarifLog(parsed, options);
 }
 
