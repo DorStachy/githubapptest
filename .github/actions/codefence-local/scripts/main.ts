@@ -22,6 +22,7 @@ import { normalizeSarifFile } from './normalize-sarif';
 import { normalizeJsonFile } from './normalize-json';
 import { applyEvidenceMode } from './apply-evidence-mode';
 import { redactFindings } from './redact-secrets';
+import { generateDiffContext } from './generate-diff-context';
 import { runSupplyChainHeuristics } from './supply-chain-heuristics';
 import { writeForkSummary } from './fork-summary';
 import { buildForkRelayArtifact } from './fork-artifact-emitter';
@@ -367,12 +368,19 @@ async function main(): Promise<void> {
 
   runScript(path.join(actionRoot, 'scripts', 'run-scanners.sh'), sharedEnv);
 
-  process.stdout.write('[debug] Scanners complete. Collecting findings...\n');
   const findings = collectNormalizedFindings(workspace, resultsDir);
-  process.stdout.write(`[debug] Collected ${findings.length} findings. Applying evidence mode...\n`);
-  const afterEvidence = applyEvidenceMode(findings, evidenceMode);
+
+  // ── DLP-safe diff context ────────────────────────────────────
+  // Generate minimal code windows (±3 lines) around each finding.
+  // Uses git diff when a base SHA is available (PR events), otherwise
+  // falls back to a small source-file window. Each context is
+  // hard-capped at 500 chars for data-loss-prevention safety.
+  const baseSha = process.env.GITHUB_BASE_SHA || event.pull_request?.base?.sha || null;
+  const headSha = process.env.GITHUB_SHA || event.pull_request?.head?.sha || null;
+  const withDiffContext = generateDiffContext(findings, workspace, baseSha, headSha);
+
+  const afterEvidence = applyEvidenceMode(withDiffContext, evidenceMode);
   const redacted = redactFindings(afterEvidence);
-  process.stdout.write(`[debug] Redacted to ${redacted.length} findings. Writing output...\n`);
 
   const outputFindingsPath = path.join(resultsDir, 'normalized-findings.json');
   writeJsonFile(outputFindingsPath, redacted);
@@ -440,7 +448,6 @@ async function main(): Promise<void> {
   const headRef = event.pull_request?.head?.ref ?? process.env.GITHUB_HEAD_REF ?? undefined;
   const baseRef = event.pull_request?.base?.ref ?? process.env.GITHUB_BASE_REF ?? undefined;
 
-  process.stdout.write(`[debug] Uploading ${redacted.length} findings to ${config.apiBaseUrl}...\n`);
   const upload = await uploadResults(config, {
     installationId,
     repositoryFullName:
@@ -490,14 +497,7 @@ async function main(): Promise<void> {
 
 if (require.main === module) {
   main().catch((error) => {
-    if (error instanceof Error) {
-      process.stderr.write(`${error.message}\n`);
-      if (error.stack) {
-        process.stderr.write(`Stack trace:\n${error.stack}\n`);
-      }
-    } else {
-      process.stderr.write(`${String(error)}\n`);
-    }
+    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
     process.exit(1);
   });
 }
