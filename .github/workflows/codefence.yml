@@ -27,3 +27,4 @@ jobs:
           fail-on: never
         env:
           CODEFENCE_INSTALLATION_ID: ${{ secrets.CODEFENCE_INSTALLATION_ID }}
+          CODEFENCE_SIGNING_SECRET: ${{ secrets.CODEFENCE_SIGNING_SECRET }}
