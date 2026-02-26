@@ -608,8 +608,24 @@ export function normalizeJsonPayload(payload: unknown, options: NormalizeOptions
 }
 
 export function normalizeJsonFile(filePath: string, options: NormalizeOptions): NormalizedFinding[] {
-  const raw = fs.readFileSync(filePath, 'utf8');
-  const parsed = JSON.parse(raw);
+  const raw = fs.readFileSync(filePath, 'utf8').trim();
+  if (raw.length === 0) {
+    process.stderr.write(
+      `[warn] Skipping empty JSON file from ${options.toolName}: ${filePath}\n`,
+    );
+    return [];
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (err) {
+    process.stderr.write(
+      `[warn] Invalid JSON from ${options.toolName} (${filePath}): ${
+        err instanceof Error ? err.message : String(err)
+      }\n`,
+    );
+    return [];
+  }
   return normalizeJsonPayload(parsed, options);
 }
 
