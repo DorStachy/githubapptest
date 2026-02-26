@@ -1,27 +1,83 @@
-# githubapptest
+# CodeFense Platform API
 
-Intentionally vulnerable demo repository used to validate end-to-end CodeFence local (GitHub Action) scanning pipeline.
+Production-grade REST API for the CodeFense SaaS platform — package security analytics, supply-chain monitoring, and vulnerability intelligence for engineering teams.
 
-## Purpose
+## Overview
 
-- Exercise local scanner execution in GitHub Actions
-- Upload findings back to CodeFence backend
-- Validate processor pipeline enrichment and reporting
+CodeFense Platform API powers:
+- **Package Analysis** — deep static and dynamic analysis of npm, PyPI, and RubyGems packages
+- **Supply-Chain Monitoring** — continuous monitoring of your dependency graph against threat feeds
+- **Policy Engine** — configurable organisational policies with blocking rules and audit trails
+- **Reporting** — on-demand and scheduled PDF/JSON reports with SARIF export
 
-## Structure
+## Architecture
 
-- `.github/workflows/codefence.yml` GitHub Action scanner workflow
-- `package.json` minimal Node app manifest
-- `src/server.js` intentionally insecure application code
-- `.env.example` sample configuration with intentionally unsafe defaults
+```
+┌──────────────────┐     ┌──────────────────┐     ┌────────────────┐
+│   Load Balancer  │────▶│  Platform API    │────▶│  PostgreSQL 15 │
+│   (ALB / nginx)  │     │  (Node/Express)  │     │  (RDS)         │
+└──────────────────┘     └────────┬─────────┘     └────────────────┘
+                                  │
+                    ┌─────────────┼─────────────┐
+                    ▼             ▼             ▼
+             ┌──────────┐  ┌──────────┐  ┌──────────┐
+             │  Redis   │  │   S3     │  │  SQS     │
+             │  Cache   │  │ Storage  │  │  Queue   │
+             └──────────┘  └──────────┘  └──────────┘
+```
 
-## Warning
+## Getting Started
 
-This repository contains deliberately insecure code for security testing only.
+### Prerequisites
 
-CodeFence GitHub App integration test repository.
+- Node.js >= 18
+- PostgreSQL 15
+- Redis 7
 
-This repo contains intentionally vulnerable code samples for validating
-the CodeFence security scanner across all 11 scanning tools.
+### Installation
 
-**⚠️ Do NOT use any code from this repository in production.**
+```bash
+npm install
+cp .env.example .env
+# Edit .env with your credentials
+npm run migration:run
+npm run seed
+npm run dev
+```
+
+### Running Tests
+
+```bash
+npm test
+```
+
+### API Documentation
+
+Swagger UI is available at `/api/docs` when `NODE_ENV=development`.
+
+## Environment Variables
+
+See `.env.example` for the full list. Critical variables:
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `REDIS_URL` | Redis connection string |
+| `JWT_SECRET` | Secret for signing JWTs |
+| `S3_BUCKET` | S3 bucket for report storage |
+
+## Deployment
+
+Docker images are built and pushed to ECR on every merge to `main` via GitHub Actions.
+
+```bash
+docker build -t codefense-api .
+docker run -p 3000:3000 --env-file .env codefense-api
+```
+
+## Contributing
+
+1. Branch from `main`
+2. Follow the existing patterns in `src/`
+3. Add unit tests for any new service methods
+4. Ensure `npm run lint` and `npm test` pass before opening a PR
